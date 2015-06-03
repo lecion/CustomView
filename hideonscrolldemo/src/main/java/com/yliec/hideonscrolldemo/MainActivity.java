@@ -3,6 +3,7 @@ package com.yliec.hideonscrolldemo;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         ib = (ImageButton) findViewById(R.id.ib_add);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(new MyRecyclerViewAdapter());
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             private boolean isVisible = true;
