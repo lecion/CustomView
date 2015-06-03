@@ -1,6 +1,7 @@
 package com.yliec.hideonscrolldemo;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,7 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageButton;
-import android.widget.TextView;
+
+import com.yliec.hideonscrolldemo.bean.User;
+import com.yliec.hideonscrolldemo.databinding.ActivityMainBinding;
+import com.yliec.hideonscrolldemo.databinding.LayoutItemBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +29,15 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar = null;
     private RecyclerView recyclerView;
     private ImageButton ib;
-    private List<String> items;
+    private List<User> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        User user = new User("Liecheng", "Yuan");
+        binding.setUser(user);
         initData();
         initView();
     }
@@ -38,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private void initData() {
         items = new ArrayList<>();
         for(int i = 0; i < 20; i++) {
-            items.add("item" + i);
+            items.add(new User("first" + i, "last" + i));
         }
     }
 
@@ -131,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             Context context = parent.getContext();
             if (viewType == TYPE_ITEM) {
-                View v = LayoutInflater.from(context).inflate(R.layout.layout_item, parent, false);
-                return new ViewHolder(v);
+                LayoutItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.layout_item, parent, false);
+                return new ViewHolder(binding);
             } else if (viewType == TYPE_HEADER) {
                 View v = LayoutInflater.from(context).inflate(R.layout.layout_header, parent, false);
                 return new HeaderViewHolder(v);
@@ -143,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (position != 0) {
-                ((ViewHolder)holder).setData(items.get(position - 1));
+                ((ViewHolder)holder).setUser(items.get(position - 1));
             }
         }
 
@@ -166,16 +173,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public final class ViewHolder extends RecyclerView.ViewHolder {
-            private View itemView;
-            private TextView tvTitle;
-            public ViewHolder(View itemView) {
-                super(itemView);
-                this.itemView = itemView;
-                tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
+
+            private final LayoutItemBinding itemBinding;
+
+            public ViewHolder(LayoutItemBinding itemBinding) {
+                super(itemBinding.getRoot());
+                this.itemBinding = itemBinding;
             }
 
-            void setData(String data) {
-                tvTitle.setText(data);
+            void setUser(User user) {
+                itemBinding.setUser(user);
             }
 
         }
