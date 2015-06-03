@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         ib = (ImageButton) findViewById(R.id.ib_add);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter(new MyRecyclerViewAdapter());
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             private boolean isVisible = true;
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
